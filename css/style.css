@@ -1,0 +1,99 @@
+.top {
+	margin-top: 70px;
+}
+img{
+	width: 100%;
+	height: auto;
+}
+
+.prettyprint{
+	overflow-y: scroll;
+	height: 300px;
+}
+::-webkit-scrollbar {
+  width: 8px; /* 1px wider than Lion. */
+  /* This is more usable for users trying to click it. */
+  background-color: rgba(0,0,0,0);
+  -webkit-border-radius: 100px;
+}
+/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+::-webkit-scrollbar:hover {
+  background-color: rgba(0, 0, 0, 0.09);
+}
+ 
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  /* This is the EXACT color of Mac OS scrollbars. 
+     Yes, I pulled out digital color meter */
+  background: rgba(0,0,0,0.5);
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background: rgba(0,0,0,0.61); /* Some darker color when you click it */
+  -webkit-border-radius: 100px;
+}
+footer{
+	min-height: 100px;
+}
+.dark{
+  box-shadow: 0px 0px 10px black;
+}
+a:hover{
+  cursor:pointer;
+}
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+.smallimage {
+    width: 50px;
+    display: inline-block;
+}
+
+
+
+.name {
+    display: inline-block;
+    font-size: 20px;
+    font-family: Verdana;
+    width: 70%;
+    text-align: center;
+}
+
+.score {
+    display: inline-block;
+    font-size: 16px;
+    text-align: right;
+    font-family: Verdana;
+    width: 12%;
+}
+
+.draw-button {
+  width: 50%;
+  height: 50px;
+  margin-top: 20px;
+}
+
+.form {
+    margin-top: 80px;
+}
+
+.container {
+    width: 90%;
+}
+
+#finishMsg {
+    width: 100%;
+    text-align: center !important;
+  font-size: 50px;
+  margin-top: 100px;
+}

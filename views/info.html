@@ -1,0 +1,29 @@
+<div class="container">
+<form class="form" ng-submit="submit()">
+    <p>Please fill this form before continuing with the experiment</p>
+  <div class="form-group">
+    <label for="userID">UserID</label>
+      <p>Automatically assigned ID (cannot be edited)</p>
+    <input type="userID" class="form-control" id="userID" ng-model="user.id" value="1" disabled>
+  </div>
+  <div class="form-group">
+    <label for="year">YearOfBirth</label>
+            <p>What year are you born in?</p>
+    <input type="number" class="form-control" name="year" ng-model="user.yob" id="year" min="1915" max="2010" required/>
+  </div>
+    <div class="form-group">
+        <label>Gender</label>
+  <div class="radio">
+      <label>
+  <input type="radio" name="sex" value="male" ng-model="user.gender" required>Male
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+<input type="radio" name="sex" value="female" ng-model="user.gender">Female
+      </label>
+    </div>
+        </div>
+  <button type="submit" class="btn btn-default">Continue</button>
+</form>
+</div>

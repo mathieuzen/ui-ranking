@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+        <div class="">
+            <center>
+                <h2>Leader Board</h2>
+                <hr/>
+            </center>
+            <div class="well" ng-repeat="ui in uiset | object2Array | orderBy : 'value/impressions' : true">
+                <img class="smallimage" src="images/{{ui.name}}.jpg" />
+                <span class="name">{{ui.name}}</span>
+                <span class="score">{{Math.round(ui.value/ui.impressions*100)}}%</span>
+            </div>
+        </div>
+    </div>
+</div>

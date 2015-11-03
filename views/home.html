@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <center>
+            <h2>Which UI has the greatest balance ?</h2>
+        </center>
+        <hr/>
+    </div>
+    <div ng-hide="finished">
+        <div ng-show="image1" class="row row-centered">
+            <div class="col-lg-6 col-md-6 col-xs-12 col-centered">
+                <a><img class="img img-thumbnail dark" ng-src="images/{{image1}}" ng-click="vote(image1, image2)" />
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-xs-12 col-centered">
+                <a><img class="img img-thumbnail dark" ng-src="images/{{image2}}" ng-click="vote(image2, image1)" />
+                </a>
+            </div>
+        </div>
+        <div ng-show="image1" class="row row-centered">
+            <button ng-click="draw(image1, image2)" class="draw-button">It's a draw</button>
+        </div>
+    </div>
+    <div id="finishMsg" ng-show="finished">
+        <p>You have done all possible combinations. Thanks !</p>
+    </div>
+    <hr/>
+
+</div>
+</div>

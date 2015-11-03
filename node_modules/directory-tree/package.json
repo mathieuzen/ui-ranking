@@ -1,0 +1,42 @@
+{
+  "name": "directory-tree",
+  "version": "0.1.1",
+  "description": "Convert a directory tree to a JS object.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mihneadb/node-directory-tree"
+  },
+  "keywords": [
+    "directory",
+    "tree"
+  ],
+  "main": "lib/directory-tree.js",
+  "author": {
+    "name": "Mihnea Dobrescu-Balaur"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mihneadb/node-directory-tree/issues"
+  },
+  "homepage": "https://github.com/mihneadb/node-directory-tree",
+  "_id": "directory-tree@0.1.1",
+  "dist": {
+    "shasum": "50eb7494e5ad0dbd67df9f5bef3e7f02f0e7c884",
+    "tarball": "http://registry.npmjs.org/directory-tree/-/directory-tree-0.1.1.tgz"
+  },
+  "_from": "directory-tree@",
+  "_npmVersion": "1.4.3",
+  "_npmUser": {
+    "name": "mihneadb",
+    "email": "mihnea@linux.com"
+  },
+  "maintainers": [
+    {
+      "name": "mihneadb",
+      "email": "mihnea@linux.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "50eb7494e5ad0dbd67df9f5bef3e7f02f0e7c884",
+  "_resolved": "https://registry.npmjs.org/directory-tree/-/directory-tree-0.1.1.tgz"
+}
