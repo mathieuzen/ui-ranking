@@ -23,3 +23,4 @@ If you want to replace the images used for comparisons, you need to follow those
 ```
 nodejs test.js
 ```
+The result of the following is "null". That's ok. You may test the app with your new images now.
