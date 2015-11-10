@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row">
+        <center>
+            <h2>{{technique}}</h2>
+        </center>
+        <hr/>
+        <img class="illustration img-responsive center-block" src="graphics/{{technique | lowercase}}.png" />
+        <p class="description text-center" ng-bind-html-unsafe="description">
+        </p>
+        <nav class="navigation center-block">
+            <ul class="pager">
+                <li class="previous"><a href="#/info"><span aria-hidden="true">&larr;</span>Previous</a></li>
+                <li class="next"><a href="#/home">Next <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -20,8 +20,12 @@ uiranking.config(["$routeProvider", function ($routeProvider) {
         templateUrl: "views/stats.html",
         controller: "statsController"
     }).
+    when("/description", {
+        templateUrl: "views/description.html",
+        controller: "descriptionController"
+    }).
     otherwise({
-        redirectTo: "/home"
+        redirectTo: "/info"
     })
 }]);
 
@@ -29,14 +33,18 @@ uiranking.config(["$routeProvider", function ($routeProvider) {
 uiranking.controller("homeController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope", "$http",
  function ($scope, angularFireCollection, firebase_url, $rootScope, $http) {
         var picturesRef;
-     
+
         var comparisonsArray = [];
 
         var array = [];
 
+
         var userId = "2";
-     
-         var nComparisons = 0;
+
+        var nComparisons = 0;
+
+
+        $rootScope.technique = "Balance";
 
 
         var success = function (data) {
@@ -55,42 +63,42 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
         activate_nav(".home");
         $scope.refresh = function () {
             setTimeout(function () {
-                
-                if(nComparisons < maxComparisons(array.length)){                                
-                $scope.image1 = array[Math.floor(Math.random() * array.length)];
-                var name1 = $scope.image1.substring(0, $scope.image1.length - 4);
-                $scope.image2 = array[Math.floor(Math.random() * array.length)];
-                var name2 = $scope.image2.substring(0, $scope.image2.length - 4);
-                
-                while ($scope.image1 === $scope.image2 || compared(name1,name2)) {
+
+                if (nComparisons < maxComparisons(array.length)) {
                     $scope.image1 = array[Math.floor(Math.random() * array.length)];
-                    name1 = $scope.image1.substring(0, $scope.image1.length - 4);
+                    var name1 = $scope.image1.substring(0, $scope.image1.length - 4);
                     $scope.image2 = array[Math.floor(Math.random() * array.length)];
-                    name2 = $scope.image2.substring(0, $scope.image2.length - 4);
-                }
-                                    
-                $scope.pictures.once("value", function (snapshot) {
+                    var name2 = $scope.image2.substring(0, $scope.image2.length - 4);
 
-                    if (!snapshot.hasChild(name1)) {
-                        $scope.pictures.child(name1).child("name").set(name1);
-                        $scope.pictures.child(name1).child("value").set(0);
-                        $scope.pictures.child(name1).child("impressions").set(1);
-                    } else {
-                        $scope.pictures.child(name1).child("impressions").set(snapshot.val()[name1].impressions + 1);
+                    while ($scope.image1 === $scope.image2 || compared(name1, name2)) {
+                        $scope.image1 = array[Math.floor(Math.random() * array.length)];
+                        name1 = $scope.image1.substring(0, $scope.image1.length - 4);
+                        $scope.image2 = array[Math.floor(Math.random() * array.length)];
+                        name2 = $scope.image2.substring(0, $scope.image2.length - 4);
                     }
 
-                    if (!snapshot.hasChild(name2)) {
-                        $scope.pictures.child(name2).child("name").set(name2);
-                        $scope.pictures.child(name2).child("value").set(0);
-                        $scope.pictures.child(name2).child("impressions").set(1);
-                    } else {
-                        $scope.pictures.child(name2).child("impressions").set(snapshot.val()[name2].impressions + 1);
-                    }
-                });
-                } else{
+                    $scope.pictures.once("value", function (snapshot) {
+
+                        if (!snapshot.hasChild(name1)) {
+                            $scope.pictures.child(name1).child("name").set(name1);
+                            $scope.pictures.child(name1).child("value").set(0);
+                            $scope.pictures.child(name1).child("impressions").set(1);
+                        } else {
+                            $scope.pictures.child(name1).child("impressions").set(snapshot.val()[name1].impressions + 1);
+                        }
+
+                        if (!snapshot.hasChild(name2)) {
+                            $scope.pictures.child(name2).child("name").set(name2);
+                            $scope.pictures.child(name2).child("value").set(0);
+                            $scope.pictures.child(name2).child("impressions").set(1);
+                        } else {
+                            $scope.pictures.child(name2).child("impressions").set(snapshot.val()[name2].impressions + 1);
+                        }
+                    });
+                } else {
                     $scope.finished = true;
                 }
-                                $scope.$apply();
+                $scope.$apply();
 
             }, 100);
         }
@@ -118,56 +126,63 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
             $scope.refresh();
         }
 
-        function compared(name1, name2){
-            if(name1 === name2)
+        function compared(name1, name2) {
+            if (name1 === name2)
                 return true;
-            var namesConcat = name1+name2, namesConcatInverted = name2+name1;
-            if(comparisonsArray.indexOf(namesConcat) === -1 && comparisonsArray.indexOf(namesConcatInverted) === -1 ){
-                comparisonsArray.push(namesConcat,namesConcatInverted);
+            var namesConcat = name1 + name2,
+                namesConcatInverted = name2 + name1;
+            if (comparisonsArray.indexOf(namesConcat) === -1 && comparisonsArray.indexOf(namesConcatInverted) === -1) {
+                comparisonsArray.push(namesConcat, namesConcatInverted);
                 nComparisons += 1;
                 return false;
-            }
-            else {
+            } else {
                 return true;
             }
         }
-     
-     function maxComparisons(n){
-        return (Math.pow(n,2)-n)/2;   
-     }
+
+        function maxComparisons(n) {
+            return (Math.pow(n, 2) - n) / 2;
+        }
  }
 ]);
 
 
 //Controller for demographic form and userId assignment
-uiranking.controller("infoController", ["$scope","$rootScope", "angularFireCollection", "firebase_url", "$location",
-    function ($scope,$rootScope,angularFireCollection, firebase_url, $location) {
-        
+uiranking.controller("infoController", ["$scope", "$rootScope", "angularFireCollection", "firebase_url", "$location",
+    function ($scope, $rootScope, angularFireCollection, firebase_url, $location) {
+
         $rootScope.users = new Firebase(firebase_url.users);
-        
-        $rootScope.users.once("value", function(snapshot){
-            if(snapshot.hasChildren()){
-                var value = snapshot.val();
-                $rootScope.user.id = value.nextId;
-            }
-            else {
-               $rootScope.user.id = 1;
-            }
-            $rootScope.users.child("nextId").set($rootScope.user.id + 1);
-            $scope.$apply();
-        });
-        
-        $rootScope.user = {
-            id: '',
-            yob: '',
-            gender: ''
+
+        if (!$rootScope.user) {
+            $rootScope.user = {};
         }
+        
+        $rootScope.users.once("value", function (snapshot) {
+            if (!$rootScope.idSaved) {
+                if (snapshot.hasChildren()) {
+                    var value = snapshot.val();
+                    $rootScope.user.id = value.nextId;
+                } else {
+                    $rootScope.user.id = 1;
+                }
+                $rootScope.users.child("nextId").set($rootScope.user.id + 1);
+                $scope.$apply();
+            }
+        });
+
         $scope.submit = function () {
-            console.log($rootScope.user);
-            $location.path('/home')
+            $rootScope.idSaved = true;
+            $location.path('/description')
         }
     }
 ]);
+
+uiranking.controller("descriptionController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope",
+ function ($scope, angularFireCollection, firebase_url, $rootScope) {
+        $rootScope.technique = "Balance";
+        $scope.description = "Balance is a search for equilibrium along a vertical or horizontal axis in the layout.<br/>The metaphore of the balance can be used as a technique to measure balance of a UI.<br/>On the above illustration, left UI is more balanced than the right UI because weights of its objects are better distributed.";
+
+ }]);
 
 //Controller for showing statistics
 uiranking.controller("statsController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope",

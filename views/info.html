@@ -1,15 +1,15 @@
 <div class="container">
-<form class="form" ng-submit="submit()">
+<form class="form" ng-submit="submit(sex)">
     <p>Please fill this form before continuing with the experiment</p>
   <div class="form-group">
     <label for="userID">UserID</label>
       <p>Automatically assigned ID (cannot be edited)</p>
-    <input type="userID" class="form-control" id="userID" ng-model="user.id" value="1" disabled>
+    <input type="userID" class="form-control" id="userID" ng-model="user.id" value="{{user.id}}" disabled>
   </div>
   <div class="form-group">
     <label for="year">YearOfBirth</label>
             <p>What year are you born in?</p>
-    <input type="number" class="form-control" name="year" ng-model="user.yob" id="year" min="1915" max="2010" required/>
+    <input type="number" class="form-control" name="year" ng-model="user.yob" id="year" min="1915" max="2010" ng-init="user.yob=user.yob" required/>
   </div>
     <div class="form-group">
         <label>Gender</label>
@@ -24,6 +24,10 @@
       </label>
     </div>
         </div>
-  <button type="submit" class="btn btn-default">Continue</button>
+            <nav class="navigation center-block">
+            <ul class="pager">
+                <button class="nextButton" type="submit"  href="#">Next <span aria-hidden="true">&rarr;</span></button></li>
+            </ul>
+        </nav>
 </form>
 </div>
