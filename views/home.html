@@ -23,6 +23,9 @@
     <div id="finishMsg" ng-show="finished">
         <p>You have done all possible combinations. Thanks !</p>
     </div>
+    <div ng-show="finished" class="row row-centered">
+        <button ng-click="next()" class="draw-button btn  nextButton">Continue with {{nextTechnique}}</button>
+    </div>
     <hr/>
 
 </div>

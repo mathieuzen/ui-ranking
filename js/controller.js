@@ -30,8 +30,8 @@ uiranking.config(["$routeProvider", function ($routeProvider) {
 }]);
 
 //Controller for experiment core comparisons
-uiranking.controller("homeController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope", "$http",
- function ($scope, angularFireCollection, firebase_url, $rootScope, $http) {
+uiranking.controller("homeController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope", "$http", "$location",
+ function ($scope, angularFireCollection, firebase_url, $rootScope, $http, $location) {
         var picturesRef;
 
         var comparisonsArray = [];
@@ -42,9 +42,6 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
         var userId = "2";
 
         var nComparisons = 0;
-
-
-        $rootScope.technique = "Balance";
 
 
         var success = function (data) {
@@ -143,6 +140,11 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
         function maxComparisons(n) {
             return (Math.pow(n, 2) - n) / 2;
         }
+     
+        $scope.next = function(){
+            $rootScope.techniqueId += 1;
+            $location.path( "/description" );
+        }   
  }
 ]);
 
@@ -172,6 +174,7 @@ uiranking.controller("infoController", ["$scope", "$rootScope", "angularFireColl
 
         $scope.submit = function () {
             $rootScope.idSaved = true;
+            $rootScope.techniqueId = 0;
             $location.path('/description')
         }
     }
@@ -179,8 +182,10 @@ uiranking.controller("infoController", ["$scope", "$rootScope", "angularFireColl
 
 uiranking.controller("descriptionController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope",
  function ($scope, angularFireCollection, firebase_url, $rootScope) {
-        $rootScope.technique = "Balance";
-        $scope.description = "Balance is a search for equilibrium along a vertical or horizontal axis in the layout.<br/>The metaphore of the balance can be used as a technique to measure balance of a UI.<br/>On the above illustration, left UI is more balanced than the right UI because weights of its objects are better distributed.";
+        $rootScope.technique = techniques[$rootScope.techniqueId].name;
+        if($rootScope.techniqueId+1 < techniques.length)
+            $rootScope.nextTechnique = techniques[$rootScope.techniqueId+1].name
+        $scope.description = techniques[$rootScope.techniqueId].description;
 
  }]);
 
