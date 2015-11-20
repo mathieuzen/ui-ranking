@@ -55,8 +55,9 @@ a:hover{
 }
 
 .smallimage {
-    width: 50px;
-    display: inline-block;
+    width: 200px;
+    margin: auto;
+    display: block;
 }
 
 
@@ -94,8 +95,13 @@ a:hover{
 #finishMsg {
     width: 100%;
     text-align: center !important;
-  font-size: 50px;
-  margin-top: 100px;
+  font-size: 40px;
+  margin-top: 70px;
+}
+#endMsg {
+    width: 100%;
+    text-align: center !important;
+  font-size: 40px;
 }
 
 .illustration {
@@ -119,4 +125,23 @@ a:hover{
   background-color: #18bc9c;
   border: 1px solid transparent;
   border-radius: 15px;
+}
+
+.participantsInfo {
+    font-size: 13 px;
+}
+
+.technique {
+    text-align: center;
+    border-top: 6px solid #202d3b;
+        border-bottom: 6px solid #202d3b;
+    padding-top: 20px;
+        padding-bottom: 20px;
+}
+
+.refresh {
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #202d3b;
 }

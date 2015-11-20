@@ -38,9 +38,6 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
 
         var array = [];
 
-
-        var userId = "2";
-
         var nComparisons = 0;
 
 
@@ -92,15 +89,39 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
                             $scope.pictures.child(name2).child("impressions").set(snapshot.val()[name2].impressions + 1);
                         }
                     });
+
+                    $rootScope.users.once("value", function (snapshot) {
+                        var id = $rootScope.user.id;
+                        var technique = $rootScope.technique;
+                        if (!snapshot.child(id).child(technique).hasChild(name1)) {
+                            $scope.users.child(id).child(technique).child(name1).child("impressions").set(1);
+                            $rootScope.users.child(id).child(technique).child(name1).child("value").set(0);
+
+                        } else {
+                            $scope.users.child(id).child(technique).child(name1).child("impressions").set(snapshot.val()["" + id][technique][name1].impressions + 1);
+
+                        }
+
+                        if (!snapshot.child(id).child(technique).hasChild(name2)) {
+                            $scope.users.child(id).child(technique).child(name2).child("impressions").set(1);
+                            $rootScope.users.child(id).child(technique).child(name2).child("value").set(0);
+                        } else {
+                            $scope.users.child(id).child(technique).child(name2).child("impressions").set(snapshot.val()["" + id][technique][name2].impressions + 1);
+
+                        }
+                    });
+
                 } else {
                     $scope.finished = true;
+                    if ($rootScope.techniqueId + 1 == techniques.length)
+                        $rootScope.rankingAvailable = true;
                 }
                 $scope.$apply();
 
             }, 100);
         }
         var firebase_init = function () {
-            $scope.pictures = new Firebase(firebase_url.base_url);
+            $scope.pictures = new Firebase(firebase_url.base_url + "/" + $rootScope.technique);
             $scope.refresh();
         }
         firebase_init();
@@ -108,19 +129,42 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
             var name1 = option1.substring(0, option1.length - 4);
             var name2 = option2.substring(0, option2.length - 4);
 
+            var id = $rootScope.user.id;
+            var technique = $rootScope.technique;
+
+
             $scope.pictures.once("value", function (snapshot) {
                 $scope.pictures.child(name1).child("value").set(snapshot.val()[name1].value + 1);
-                $scope.pictures.child(name1).child("comparisons").child(name2).child(userId).set("+");
-                $scope.pictures.child(name2).child("comparisons").child(name1).child(userId).set("-");
+                $scope.pictures.child(name1).child("comparisons").child(name2).child($rootScope.user.id).set("+");
+                $scope.pictures.child(name2).child("comparisons").child(name1).child($rootScope.user.id).set("-");
             });
+
+            $rootScope.users.once("value", function (snapshot) {
+                $rootScope.users.child(id).child(technique).child(name1).child("value").set(snapshot.val()["" + id][technique][name1].value + 1);
+                $rootScope.users.child(id).child(technique).child(name1).child("comparisons").child(name2).set("+");
+                $rootScope.users.child(id).child(technique).child(name2).child("comparisons").child(name1).set("-");
+            });
+
             $scope.refresh();
         }
         $scope.draw = function (option1, option2) {
             var name1 = option1.substring(0, option1.length - 4);
             var name2 = option2.substring(0, option2.length - 4);
-            $scope.pictures.child(name1).child("comparisons").child(name2).child(userId).set("=");
-            $scope.pictures.child(name2).child("comparisons").child(name1).child(userId).set("=");
+
+            var id = $rootScope.user.id;
+            var technique = $rootScope.technique;
+
+            $scope.pictures.child(name1).child("comparisons").child(name2).set("=");
+            $scope.pictures.child(name2).child("comparisons").child(name1).set("=");
+
+            $rootScope.users.child(id).child(technique).child(name1).child("comparisons").child(name2).set("=");
+            $rootScope.users.child(id).child(technique).child(name2).child("comparisons").child(name1).set("=");
+
             $scope.refresh();
+        }
+
+        $scope.goToRanking = function () {
+            $location.path("/stats");
         }
 
         function compared(name1, name2) {
@@ -140,11 +184,11 @@ uiranking.controller("homeController", ["$scope", "angularFireCollection", "fire
         function maxComparisons(n) {
             return (Math.pow(n, 2) - n) / 2;
         }
-     
-        $scope.next = function(){
+
+        $scope.next = function () {
             $rootScope.techniqueId += 1;
-            $location.path( "/description" );
-        }   
+            $location.path("/description");
+        }
  }
 ]);
 
@@ -158,7 +202,7 @@ uiranking.controller("infoController", ["$scope", "$rootScope", "angularFireColl
         if (!$rootScope.user) {
             $rootScope.user = {};
         }
-        
+
         $rootScope.users.once("value", function (snapshot) {
             if (!$rootScope.idSaved) {
                 if (snapshot.hasChildren()) {
@@ -183,24 +227,40 @@ uiranking.controller("infoController", ["$scope", "$rootScope", "angularFireColl
 uiranking.controller("descriptionController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope",
  function ($scope, angularFireCollection, firebase_url, $rootScope) {
         $rootScope.technique = techniques[$rootScope.techniqueId].name;
-        if($rootScope.techniqueId+1 < techniques.length)
-            $rootScope.nextTechnique = techniques[$rootScope.techniqueId+1].name
+        if ($rootScope.techniqueId + 1 < techniques.length) {
+            $rootScope.rankingAvailable = false;
+            $rootScope.nextTechnique = techniques[$rootScope.techniqueId + 1].name
+        }
         $scope.description = techniques[$rootScope.techniqueId].description;
 
  }]);
 
 //Controller for showing statistics
-uiranking.controller("statsController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope",
- function ($scope, angularFireCollection, firebase_url, $rootScope) {
+uiranking.controller("statsController", ["$scope", "angularFireCollection", "firebase_url", "$rootScope", "$route",
+ function ($scope, angularFireCollection, firebase_url, $rootScope, $route) {
+
+        $rootScope.techniques = techniques;
+
+
         $scope.Math = window.Math;
         var firebase_init = function () {
             $scope.pictures = new Firebase(firebase_url.base_url);
+            $scope.users = new Firebase(firebase_url.users);
         }
         firebase_init();
         $scope.pictures.once("value", function (snapshot) {
             $scope.uiset = snapshot.val();
             $scope.$apply();
         });
+
+        $scope.users.once("value", function (snapshot) {
+           $scope.participants = Object.keys(snapshot.val()).length-1;
+           $scope.$apply();
+        });
+     
+        $scope.refreshRanking = function(){
+            $route.reload();   
+        }
 
         activate_nav(".stats");
  }

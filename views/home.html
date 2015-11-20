@@ -21,10 +21,14 @@
         </div>
     </div>
     <div id="finishMsg" ng-show="finished">
-        <p>You have done all possible combinations. Thanks !</p>
+        <p>You have done all possible combinations for {{technique}}.</p>
     </div>
-    <div ng-show="finished" class="row row-centered">
-        <button ng-click="next()" class="draw-button btn  nextButton">Continue with {{nextTechnique}}</button>
+    <div id="endMsg" ng-show="rankingAvailable">
+        <p>The experiment is finished. Thank you for your participation. You may if you wish so consult the ranking computed until now. </p>
+    </div>
+    <div ng-show="finished || rankingAvailable" class="row row-centered">
+        <button ng-hide="rankingAvailable" ng-click="next()" class="draw-button btn  nextButton">Continue with {{nextTechnique}}</button>
+        <button ng-show="rankingAvailable" ng-click="goToRanking()" class="draw-button btn  nextButton">Global ranking</button>
     </div>
     <hr/>
 

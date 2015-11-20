@@ -2,14 +2,18 @@
     <div class="row">
         <div class="">
             <center>
-                <h2>Leader Board</h2>
+                <h2>Ranking<button ng-click="refreshRanking()" class="refresh fa fa-refresh"></button></h2>
+                <span class="participantsInfo">{{participants}} participant(s)</span>
                 <hr/>
             </center>
-            <div class="well" ng-repeat="ui in uiset | object2Array | orderBy : 'value/impressions' : true">
-                <img class="smallimage" src="images/{{ui.name}}.jpg" />
-                <span class="name">{{ui.name}}</span>
-                <span class="score">{{Math.round(ui.value/ui.impressions*100)}}%</span>
-            </div>
+<div ng-repeat="technique in techniques" class="col-md-3 col-xs-6">
+    <h3 class="technique">{{technique.name}}</h3>
+    <div class="well" ng-repeat="ui in uiset[technique.name] | object2Array | orderBy : 'value/impressions' : true">
+        <img class="smallimage" src="images/{{ui.name}}.jpg" />
+        <span class="name">{{ui.name}}</span>
+        <span class="score">{{Math.round(ui.value/ui.impressions*100)}}%</span>
+    </div>
+</div>
         </div>
     </div>
 </div>
